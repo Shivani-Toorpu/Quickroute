@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickRoute — The Gentleman's URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kings&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<div class="page-wrapper">
+
+    <!-- MASTHEAD -->
+    <header class="masthead">
+        <hr class="masthead-rule-top">
+        <h1 class="site-title">QuickRoute</h1>
+        <p class="site-tagline">Where Long Roads Find Their Short Cut</p>
+        <hr class="masthead-rule-bottom">
+    </header>
+
+    <div class="edition-bar">
+        <span id="current-date"></span>
+        <span>✦ THE PREMIER URL SHORTENING DISPATCH ✦</span>
+        <span>VOL. I &nbsp; NO. 1</span>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- LEFT: SHORTEN FORM -->
+        <section class="shorten-section">
+            <h2 class="section-heading">Submit Your Address</h2>
+            <p class="section-deck">
+                Paste your unwieldy web address below. Our telegraph operators
+                shall compress it into something a gentleman may actually recite.
+            </p>
+
+            <div class="form-group">
+                <label class="form-label" for="url-input">Long URL</label>
+                <input
+                    type="url"
+                    id="url-input"
+                    class="form-input"
+                    placeholder="https://your-very-long-url-goes-here.com/..."
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+            </div>
+
+            <button class="btn-shorten" id="shorten-btn">
+                — Dispatch —
+            </button>
+
+            <div class="error-box" id="error-box"></div>
+
+            <div class="result-box" id="result-box">
+                <p class="result-label">Your Short Route</p>
+                <p class="result-url">
+                    <a class="result-link" id="result-link" href="#" target="_blank"></a>
+                </p>
+                <p class="result-original" id="result-original"></p>
+                <button class="btn-copy" id="copy-btn">⊕ Copy to Clipboard</button>
+            </div>
+        </section>
+
+        <!-- DIVIDER -->
+        <div class="column-divider"></div>
+
+        <!-- RIGHT: STATS -->
+        <aside class="stats-section">
+            <h2 class="section-heading">The Ledger</h2>
+
+            <div class="stat-card">
+                <p class="stat-name">Cache Hits</p>
+                <p class="stat-value" id="stat-hits">—</p>
+                <p class="stat-unit">requests served from memory</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-name">Cache Misses</p>
+                <p class="stat-value" id="stat-misses">—</p>
+                <p class="stat-unit">dispatches to the database</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-name">Hit Rate</p>
+                <p class="stat-value" id="stat-hitrate">—</p>
+                <p class="stat-unit">percentage avoided from DB</p>
+            </div>
+
+            <button class="btn-refresh" id="refresh-btn">
+                ↻ Refresh The Ledger
+            </button>
+        </aside>
+
+    </main>
+
+    <footer class="footer-rule">
+        <p>QuickRoute &nbsp;·&nbsp; Engineered with C# &amp; ASP.NET Core &nbsp;·&nbsp; All Routes Reserved</p>
+    </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
