@@ -25,6 +25,10 @@ builder.Services.AddScoped<UrlService>();
 
 var app = builder.Build();
 
+// --- Debug paths ---
+Console.WriteLine($"CWD: {Directory.GetCurrentDirectory()}");
+Console.WriteLine($"BaseDir: {AppContext.BaseDirectory}");
+
 // --- Auto create table if it doesn't exist ---
 using (var scope = app.Services.CreateScope())
 {
@@ -40,22 +44,29 @@ app.UseStaticFiles();
 app.MapGet("/", async (HttpContext ctx) =>
 {
     ctx.Response.ContentType = "text/html";
-    var path = Path.Combine(AppContext.BaseDirectory, "wwwroot", "index.html");
+    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html");
+    if (!File.Exists(path))
+        path = Path.Combine(AppContext.BaseDirectory, "wwwroot", "index.html");
+    Console.WriteLine($"Serving index.html from: {path} | Exists: {File.Exists(path)}");
     await ctx.Response.SendFileAsync(path);
 });
 
 app.MapGet("/style.css", async (HttpContext ctx) =>
 {
     ctx.Response.ContentType = "text/css";
-    await ctx.Response.SendFileAsync(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "style.css"));
+    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "style.css");
+    if (!File.Exists(path))
+        path = Path.Combine(AppContext.BaseDirectory, "wwwroot", "style.css");
+    await ctx.Response.SendFileAsync(path);
 });
 
 app.MapGet("/app.js", async (HttpContext ctx) =>
 {
     ctx.Response.ContentType = "application/javascript";
-    await ctx.Response.SendFileAsync(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "app.js"));
+    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "app.js");
+    if (!File.Exists(path))
+        path = Path.Combine(AppContext.BaseDirectory, "wwwroot", "app.js");
+    await ctx.Response.SendFileAsync(path);
 });
 
 app.MapPost("/shorten", async (UrlRequest request, UrlService svc) =>
@@ -64,7 +75,8 @@ app.MapPost("/shorten", async (UrlRequest request, UrlService svc) =>
         return Results.BadRequest("URL is required");
 
     var shortCode = await svc.ShortenAsync(request.Url);
-    return Results.Ok(new { shortCode, shortUrl = $"http://localhost:5111/{shortCode}" });
+    var host = "https://quickroute-production.up.railway.app";
+    return Results.Ok(new { shortCode, shortUrl = $"{host}/{shortCode}" });
 });
 
 app.MapGet("/stats", (UrlService svc) =>
