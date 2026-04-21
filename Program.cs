@@ -40,8 +40,8 @@ app.UseStaticFiles();
 app.MapGet("/", async (HttpContext ctx) =>
 {
     ctx.Response.ContentType = "text/html";
-    await ctx.Response.SendFileAsync(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"));
+    var path = Path.Combine(AppContext.BaseDirectory, "wwwroot", "index.html");
+    await ctx.Response.SendFileAsync(path);
 });
 
 app.MapGet("/style.css", async (HttpContext ctx) =>
